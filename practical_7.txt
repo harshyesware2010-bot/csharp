@@ -1,0 +1,88 @@
+Practical 7a
+
+Develop a PWA that works in offline mode using service Worker.
+
+1.Create ASP.NET Core MVC Project
+Open Visual Studio 2026 → Create new project → Select `ASP.NET Core Web App (Model-View-Controller)
+Project Name: `SWOfflinePWA` → Framework: `.NET 10` → Click: Create
+
+2.Create Home Page
+: `Views → Home → Index.cshtml` Replace existing code with
+
+<div class="text-center">
+<h1>College Information Portal</h1>
+<h3>PWA Offline Demo</h3>
+<p>This application works without internet connection. </p>
+</div>
+
+
+3.Create Manifest File
+: Right-click `wwwroot` → `Add → New Item` → `JSON File` Name: `manifest.json`
+
+{
+"name": "Offline PWA",
+"short_name": "OfflinePWA",
+"start_url": "/",
+"display": "standalone",
+"background_color": "white",
+"theme_color": "blue",
+"icons": [
+{
+"src": "/icons/icon1.png",
+"sizes": "192x192",
+"type": "image/png"
+},
+{
+"src": "/icons/icon2.png",
+"sizes": "512x512",
+"type": "image/png"
+}]}
+
+
+4.Create Icons Folder
+: Right-click `wwwroot` → `Add → New Folder` → Name: `icons` Add: `icon1.png` 192x192
+`icon2.png` 512x512
+
+5.Create Service Worker
+: Right-click `wwwroot` → `Add → New Item` → `JavaScript File` Name: `service-worker.js`
+
+const CACHE_NAME = "pwa-cache-v1";
+const urlsToCache = [ "/","/Home/Index"];
+self.addEventListener("install", event =>
+{ event.waitUntil(caches.open(CACHE_NAME)
+.then(cache => {
+return cache.addAll(urlsToCache);
+}));});
+self.addEventListener("fetch", event => { event.respondWith(
+caches.match(event.request)
+.then(response => {
+return response || fetch(event.request);
+}));});
+
+
+6.Register Manifest
+: `Views → Shared → _Layout.cshtml` → inside `<head>`
+add link tag for `manifest.json`
+<link rel="manifest" href="/manifest.json">
+
+
+7.Register Service Worker
+: Same `_Layout.cshtml` file, before `</body>` tag
+
+<script>
+if ('serviceWorker' in navigator)
+{ navigator.serviceWorker.register('/service-worker.js')
+.then(() => console.log('Service Worker Registered'));
+}</script>
+
+
+Verify Static Files
+: `Program.cs` → Ensure `app.UseStaticFiles();` exists
+
+7.Run Application
+Run project and check PWA Install icon in browser
+Verify Service Worker
+Press `F12` → `Application → Service Workers` → Check `service-worker.js` status= `activated and running`
+Test Offline Mode
+Press `F12` → `Network` tab → Select `Offline` → Refresh webpage
+

@@ -1,0 +1,166 @@
+Practical No :-3
+
+Q.1 Create methods add(). multiply(), substract() ,divide() with suitable parameters 
+and call these methods using concept of C# delegate.
+
+Code:-
+
+using System;
+
+class Program
+{
+  
+    delegate void Arithmetic(int a, int b);
+
+   
+    static void Add(int a, int b)
+    {
+        Console.WriteLine("Addition = " + (a + b));
+    }
+
+    static void Subtract(int a, int b)
+    {
+        Console.WriteLine("Subtraction = " + (a - b));
+    }
+
+    static void Multiply(int a, int b)
+    {
+        Console.WriteLine("Multiplication = " + (a * b));
+    }
+
+    static void Divide(int a, int b)
+    {
+        if (b != 0)
+            Console.WriteLine("Division = " + (a / b));
+        else
+            Console.WriteLine("Division by zero is not allowed.");
+    }
+
+    static void Main()
+    {
+        Arithmetic d;
+
+        d = Add;
+        d(20, 10);
+
+        d = Subtract;
+        d(20, 10);
+
+        d = Multiply;
+        d(20, 10);
+
+        d = Divide;
+        d(20, 10);
+
+        Console.ReadLine();
+    }
+}
+---------------------------------------------------------------------
+
+Q.2 Write a program using multicast delegate
+
+Code:-
+
+using System;
+
+namespace multicast_delegate
+{
+    delegate void Mdelegate();
+
+    class DM
+    {
+        public static void display()
+        {
+            Console.WriteLine("hello");
+        }
+
+        public static void Print()
+        {
+            Console.WriteLine("hello world");
+        }
+    }
+
+    class Mtest
+    {
+        public static void Main()
+        {
+            Mdelegate m1 = new Mdelegate(DM.display);
+            Mdelegate m2 = new Mdelegate(DM.Print);
+
+            Mdelegate m3 = m1 + m2;
+            Mdelegate m4 = m2 + m1;
+            Mdelegate m5 = m3 - m2;
+
+            m3();
+            m4();
+            m5();
+        }
+    }
+}
+-------------------------------------------------------------------
+
+Q.3 Write a c# program to create a class bankaccount with accountNo and balance implement the property balance with validation (Balance cannot be negative).
+
+Code:-
+
+using System;
+
+class BankAccount
+{
+    // Property for Account Number
+    public string AccountNumber { get; set; }
+
+    // Private field for balance
+    private double balance;
+
+    // Property with validation
+    public double Balance
+    {
+        get
+        {
+            return balance;
+        }
+        set
+        {
+            if (value >= 0)
+            {
+                balance = value;
+            }
+            else
+            {
+                Console.WriteLine("Balance cannot be negative.");
+            }
+        }
+    }
+
+    public BankAccount(string accountNumber, double balance)
+    {
+        AccountNumber = accountNumber;
+        Balance = balance;
+    }
+
+    public void Display()
+    {
+        Console.WriteLine("\nAccount Details");
+        Console.WriteLine("Account Number: " + AccountNumber);
+        Console.WriteLine("Balance: " + Balance);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Enter Account Number: ");
+        string accNo = Console.ReadLine();
+
+        Console.Write("Enter Balance: ");
+        double bal = Convert.ToDouble(Console.ReadLine());
+
+        BankAccount account = new BankAccount(accNo, bal);
+
+        account.Display();
+    }
+}
+--------------------------------------------------------------------------
+

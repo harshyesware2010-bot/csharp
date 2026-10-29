@@ -1,0 +1,307 @@
+Practical  5A: Create an MVC Application to perform basic Arithmetic Operations.
+
+Steps:
+1: Open visual studio 2022/2026
+
+2: Create new project
+•  Click on create a new project
+•  Search for MVC
+•  Select project type as ASP.NET Core Web App(Model-View-controller)
+•  Then click next
+
+2.2 Name the project arithmeticmvc->Click Next->Select Framework (latest available)
+
+3. Create Model File
+•  In solution Explorer (If this window is not seen, go to view Menu and select it.)
+•  Right-click: Models →Add→Class
+•  Enter File name as Calculator.cs and click Add
+
+namespace arithmeticmvc.Models{
+public class Calculator{
+public double Number1{ get;set;}
+public double Number2{ get;set;}
+public required string operation { get; set; }
+public double Result { get; set; }
+
+Press Ctrl+ S to save
+
+4. Open Controller
+In solution explorer: open Controllers => Double click HomeController.cs
+Modify Controller code:
+Remove existing code inside HomeController and replace with:
+
+using arithmeticmvc.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+namespace arithmeticmvc.Controllers{
+public class HomeController : Controller
+{ public IActionResult Index(Calculator calc){
+switch (calc.operation){
+case "+":
+calc.Result = calc.Number1 + calc.Number2;
+break;
+case "-":
+calc.Result = calc.Number1 - calc.Number2;
+break;
+case "*":
+calc.Result = calc.Number1 * calc.Number2;
+break;
+case "/":
+if (calc.Number2 != 0)
+{
+calc.Result = calc.Number1 / calc.Number2;
+}
+break;} return View(calc);}}}
+
+Save the file
+
+5. Open views Folder
+In solution explorer: Open: => Views -> Home
+Double-click => Index.cshtml
+
+11: Replace Existing View Code: Delete all existing code and paste:
+Index.cshtml
+
+@model arithmeticmvc.Models.Calculator
+<h2>
+Arithmetic operator
+</h2>
+<form method="post">
+<label>Enter Number 1</label>
+<input type="number" step="any" asp-for="Number1" />
+<br />  <br />
+<label> Enter Number 2</label><br />
+<input type="number" step="any" asp-for="Number2" /> <br /><br />
+<label>select operation</label>
+<select asp-for="operation">
+<option value="+">Addition</option>
+<option value="-">Subtraction</option>
+<option value="*">Multiplication</option>
+<option value="/">Division</option>
+</select> <br /><br /><input type="submit" value="Calculate" /></form>
+@if (Model != null)
+{
+<h3>
+Result=@Model.Result
+</h3>
+}
+
+
+_______________________________________________________________________________________________________________________________________________________________________________________
+
+5b: Different Types of Cookies
+
+1. Create Project
+Step 1: Open Visual Studio 2026
+Step 2: Create → `ASP.NET Web Application (.NET Framework)
+Step 3: Select: `Empty` and `Check Web Forms`
+Step 4: Click Create
+
+2. Add Web Form
+Right-click Project → `Add` → `Web Form`
+Name: `CookieDemo.aspx`
+3.
+Add Controls Label Text|Control Type|	ID
+User Name	         TextBox	txtName
+Save Cookie	         Button	        btnSave
+Show Cookies	         Button	        btnShow
+Output	                 Label	        lblOutput
+
+
+Write Code for Save Cookie Button
+
+protected void btnSave_Click(object sender, EventArgs e) {
+HttpCookie sessionCookie = new HttpCookie("SessionUser");
+sessionCookie.Value = txtName.Text;
+Response.Cookies.Add(sessionCookie);
+HttpCookie persistentCookie = new HttpCookie("PersistentUser");
+persistentCookie.Value = txtName.Text;
+persistentCookie.Expires = DateTime.Now.AddDays(7);
+Response.Cookies.Add(persistentCookie);
+lblOutput.Text = "Cookies Saved Successfully";} }
+
+
+Write Code for Show Cookie Button
+
+protected void btnShow_Click(object sender, EventArgs e)
+{
+string sessionData = Request.Cookies["SessionUser"].Value;
+string persistentData = Request.Cookies["PersistentUser"].Value;
+lblOutput.Text = "Session Cookie: " + sessionData +
+"<br/>Persistent Cookie: " + persistentData;
+}
+
+
+_______________________________________________________________________________________________________________________________________________________________________________________
+
+Practical 5C: Authentication and authorization in ASP.NET Core.
+
+Step 1: Create MVC Project. Project (ASP.Net Core Web App (Model-View-Controller))
+Name AuthDemo and Framework .NET 10.Click Next.
+
+Step 2: Select Authentication Type as Individual Accounts in Additional Information window
+
+Step 3: Build Project using Rebuild Solution
+Go to Build-> Rebulid Solution
+
+Step 4: Create Database
+Open Tools ->NuGet Package Manager->Package Manager Console
+Run:
+Update-Database
+Identity tables are created automatically
+
+If Error occurred Try this:
+
+Step : Update the vulnerable package
+1. Open your AuthDemo solution in Visual Studio.
+2. Right-click the project and select Manage NuGet Packages.
+3. Open the Installed tab.
+4. Find System.Security.Cryptography.Pkcs.
+5. Update it from 9.0.11 to 9.0.21 or a compatible newer patched version. Version 9.0.21 fixes this advisory. 
+   GitHub+1
+
+
+Step 5: Run Application
+
+Step 6: Register User by clicking Register link and entering Email and Password
+
+Step 7: Login by clicking Login link and entering credentials
+
+Step 8: Add Authorized Page.
+Create new method in HomeController and apply Authorize attribute
+
+
+using Microsoft.AspNetCore.Authorization;
+Add new Method
+[Authorize]
+public IActionResult Secret()
+{
+return View();
+}
+
+
+Step 9: Create Secret View in Views/Home folder
+Create folder only if needed.
+Right-click on Home Folder → Add → View → Select Razor View Empty
+Name: Secret.cshtml
+Write in empty area below the prewritten lines:
+
+<h2>Authorized Users Only</h2>
+Step 10: Test Authorization by accessing /Home/Secret URL.
+If logged in page opens else redirects to Login page
+
+_______________________________________________________________________________________________________________________________________________________________________________________
+
+5D: Develop a web application to perform CRUD Operations(Create, Read, Update, Delete) on
+Employee table using EF Core.
+
+1. Open Visual Studio 2026 and create a new project
+
+2: Create MVC Project.
+Select ASP.NET Core Web App Model-View-Controller
+
+3: Configure Project. Set Project Name and Framework
+Project Name :EmployeeCRUD and Framework .NET 10
+
+4: Install EF Core Packages using NuGet Package Manager. Install
+Goto: Tools->NuGet Package Manager->Manage NuGet Packages for Solution
+Install:
+
+Microsoft.EntityFrameworkCore.SqlServer
+Microsoft.EntityFrameworkCore
+Microsoft.EntityFrameworkCore.Tools
+Microsoft.EntityFrameworkCore.Design
+Microsoft.VisualStudio.Web.CodeGeneration.Design
+Use Same Version:10.08(or lower but same version for all above packages)
+
+5. Create Employee Model
+Right-click:
+Models->Add->Class
+Name: Employee.cs
+Write code:
+
+
+Namespace EmployeeCRUD.Models
+{ public class Employee {
+public int Id { get; set; }
+public required string Name { get; set; }
+public required  string Department { get; set; }
+public double Salary { get; set; } }}
+
+
+4: Create Data Folder
+Right-click project->Add->New Folder->Name:Data
+
+5: Create DbContext Class
+Inside Data Folder:
+Add-> Class
+Name:AppDbContext
+AppDbContext.cs
+
+
+using EmployeeCRUD.Models;
+using Microsoft.EntityFrameworkCore;
+namespace EmployeeCRUD.Data {
+public class AppDbContext : DbContext {
+public AppDbContext(DbContextOptions<AppDbContext> options)
+: base(options){}
+public DbSet<Employee> Employees { get; set; } }}
+
+
+6: Add Connection String in appsettings.json file for EmployeeDB
+
+"ConnectionStrings": {
+"MyConnection":
+"Server=(localdb)\\MSSQLLocalDB;Database=EmployeeDB;Trusted_Connection=True;TrustServerCertificate=True"
+
+
+7: Configure DbContext in Program.cs file using AddDbContext and UseSqlServer
+
+using Microsoft.EntityFrameworkCore;
+using EmployeeCRUD.Data;
+Before:
+Var app=builder.Bulid();
+Add:
+builder.Services.AddDbContext<AppDbContext>(options =>
+options.UseSqlServer(
+builder.Configuration.GetConnectionString("MyConnection")));
+
+8. Create Employee Controller using Scaffold.
+Right-Click:Controllers
+Select:
+Add->New Scaffolded Item
+Choose:
+Select MVC Controller with views, using Entity Framework
+Click Add
+
+9: Configure Scaffold by selecting Model class as Employee and Data context class as AppDbContext
+.Click on Add
+
+10: Create Database
+Open Tools ->NuGet Package Manager->Package Manager Console
+Run: Add-Migration InitialCreate
+
+
+Note** If the Migration shows Some errors or serious Warning then:
+1. Open the File
+Locate the ProductEFCore.csproj file inside your
+C:\Users\Administrator\source\repos\ProductEFCore\directory. Open the file with Notepad or any good
+text editor.
+Paste the Code FiX before </Project>tag.
+
+
+<ItemGroup>
+<NuGetAuditSuppress Include="https://github.com/advisories/GHSA-g4vj-cjjj-v7hg" />
+</ItemGroup>
+
+And Bulid and rebuild the project again and run Migration Command again
+Once Success
+Update-Database
+
+Step 11: Run Application
+Open URL and ADD append following in front of url
+/Employees
+
+
+
+

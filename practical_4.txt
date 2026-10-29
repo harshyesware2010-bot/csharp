@@ -1,0 +1,246 @@
+4a: Student Registration Form
+STEPS:
+
+1. Open Visual Studio → File → New → Project → ASP.NET Web Application (.NET Framework) →Click Next.
+2. Project name→ Click Create
+3. Choose Empty →Add folders &core reference choose webform →Click Create
+4. Add Empty Webform →Solution Explorer:Right-click Project Name →Add →Web form
+5. Enter WebForm name →Click Add.
+6. Open WebForm1.aspx and add the following markup
+7. Open WebForm1aspx.cs and add the code-behind logic
+
+WebForm1.aspx
+
+
+<%@ Page Language="C#" AutoEventWireup="true"
+    CodeBehind="WebForm1.aspx.cs"
+    Inherits="WebApplication1.WebForm1" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>Student Registration Form</title>
+</head>
+<body>
+<form id="form1" runat="server">
+
+    <h2>Student Registration Form</h2>
+    <hr />
+
+    <asp:Label Text="Student Name:" runat="server" />
+    <asp:TextBox ID="txtName" runat="server"
+        Width="200px" />
+    <br /><br />
+
+    <asp:Label Text="Gender:" runat="server" />
+    <br />
+
+    <asp:RadioButton ID="rbMale" GroupName="gender"
+        Text="Male" runat="server" />
+
+    <asp:RadioButton ID="rbFemale" GroupName="gender"
+        Text="Female" runat="server" />
+    <br /><br />
+
+    <asp:Label Text="Course:" runat="server" />
+    <br />
+
+    <asp:DropDownList ID="ddlCourse" runat="server">
+        <asp:ListItem Text="Select Course" Value="" />
+        <asp:ListItem Text="BSc IT" Value="BSc IT" />
+        <asp:ListItem Text="BSc CS" Value="BSc CS" />
+        <asp:ListItem Text="BCA" Value="BCA" />
+    </asp:DropDownList>
+    <br /><br />
+
+    <asp:Label Text="Date of Birth:" runat="server" />
+    <br />
+
+    <asp:Calendar ID="calDOB" runat="server" />
+    <br />
+
+    <asp:CheckBox ID="chkTerms"
+        Text="I accept Terms and Conditions"
+        runat="server" />
+    <br /><br />
+
+    <asp:Button ID="btnSubmit" runat="server"
+        OnClick="btnSubmit_Click" Text="Submit" />
+
+    &nbsp;&nbsp;
+
+    <asp:Button ID="btnClear" runat="server"
+        OnClick="btnClear_Click" Text="Clear"
+        CausesValidation="false" />
+
+    <br /><br />
+
+    <asp:Label ID="lblOutput" runat="server"
+        ForeColor="Green" Font-Bold="true" />
+
+</form>
+</body>
+</html>
+
+
+WebForm1.aspx.cs
+
+using System;
+
+namespace WebApplication1
+{
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            string gender = "";
+
+            if (rbMale.Checked)
+            {
+                gender = rbMale.Text;
+            }
+            else if (rbFemale.Checked)
+            {
+                gender = rbFemale.Text;
+            }
+
+            if (chkTerms.Checked)
+            {
+                lblOutput.Text = "Student Name: " + txtName.Text
+                    + "<br/>Gender: " + gender
+                    + "<br/>Course: " + ddlCourse.SelectedValue
+                    + "<br/>Date: " + calDOB.SelectedDate.ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                lblOutput.Text = "Please accept terms & conditions.";
+            }
+        }
+
+        protected void btnClear_Click(object sender, EventArgs e)
+        {
+            txtName.Text = "";
+            rbMale.Checked = false;
+            rbFemale.Checked = false;
+            ddlCourse.SelectedIndex = 0;
+            chkTerms.Checked = false;
+            calDOB.SelectedDate = DateTime.MinValue;
+            lblOutput.Text = "";
+        }
+    }
+}
+
+_______________________________________________________________________________________________________________________________________________________________________________________
+
+4b: Registration Form with Validation Controls
+
+
+WebForm1.aspx
+
+<form id="form1" runat="server">
+<h2>Registration with Validation</h2>
+Name:
+<asp:TextBox ID="txtName" runat="server" />
+<asp:RequiredFieldValidator ControlToValidate="txtName" ErrorMessage="Name is required!" ForeColor="Red"
+runat="server" />
+<br />
+Age:<asp:TextBox ID="txtAge" runat="server" />
+<asp:RequiredFieldValidator ControlToValidate="txtAge" ErrorMessage="Age required!" ForeColor="Red" runat="server" />
+<asp:RangeValidator ControlToValidate="txtAge" Type="Integer" MinimumValue="18" MaximumValue="60"
+ErrorMessage="Age must be 18-60" ForeColor="Red" runat="server" />
+<br />
+Email:<asp:TextBox ID="txtEmail" runat="server" />
+<asp:RegularExpressionValidator ControlToValidate="txtEmail" ValidationExpression="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+ErrorMessage="Invalid Email!" ForeColor="Red" runat="server" />
+<br />
+Password:
+<asp:TextBox ID="txtPass" TextMode="Password" runat="server" />
+<asp:RequiredFieldValidator ControlToValidate="txtPass" ErrorMessage="Password required!" ForeColor="Red"
+runat="server" />
+<br />
+Confirm:<asp:TextBox ID="txtConfirm" TextMode="Password" runat="server" />
+<asp:CompareValidator ControlToValidate="txtConfirm" ControlToCompare="txtPass" ErrorMessage="Passwords do not
+match!" ForeColor="Red" runat="server" />
+<br />
+<asp:Button ID="btnReg" Text="Register" runat="server" OnClick="btnReg_Click" Height="31px" />
+<asp:ValidationSummary runat="server" ForeColor="Red" /> <asp:Label ID="lblMsg" runat="server" ForeColor="Green" />
+</form> </body> </html>
+
+
+WebForm1.aspx.cs
+
+protected void btnReg_Click(object sender, EventArgs e)
+{
+if (Page.IsValid)
+{
+	lblMsg.Text = "Registration successful.";
+}}
+
+
+Web.config
+
+<configuration>
+<appSettings>
+<add key="ValidationSettings:UnobtrusiveValidationMode" value="None" />
+</appSettings>
+<system.web>
+
+
+
+_______________________________________________________________________________________________________________________________________________________________________________________
+
+
+4c: AdRotator Control
+
+XMLFile.xml
+
+<?xml version="1.0" encoding="utf-8" ?>
+<Advertisements>
+	<Ad>
+		<ImageUrl>image1.jpg</ImageUrl>
+		<NavigateUrl>https://google.com</NavigateUrl>
+		<AlternateText>Advertisement</AlternateText>
+		<Impressions>1</Impressions>
+		<Keyword>food</Keyword>
+	</Ad>
+	<Ad>
+		<ImageUrl>image2.jpg</ImageUrl>
+		<NavigateUrl>https://youtube.com</NavigateUrl>
+		<AlternateText>Dog</AlternateText>
+		<Impressions>1</Impressions>
+		<Keyword>food</Keyword>
+	</Ad>
+	<Ad>
+		<ImageUrl>image3.jpg</ImageUrl>
+		<NavigateUrl>https://facebook.com</NavigateUrl>	
+		<AlternateText>Cat</AlternateText>
+		<Impressions>1</Impressions>
+		<Keyword>food</Keyword>
+	</Ad>
+</Advertisements>
+
+
+Default.aspx
+
+<form id="form1" runat="server">
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Adrotater.Default" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <asp:AdRotator ID="AdRotator1" runat="server" AdvertisementFile="~/XMLFile.xml" Height="200px" Width="468px" />
+        </div>
+        <asp:Button ID="Button1" runat="server" Text="Show Another Ad" />
+    </form>
+</body>
+</html>

@@ -1,0 +1,184 @@
+Practical 6A
+
+Create a simple website for a college Information Portal and convert it into a progressive web application.
+
+1.Create ASP.NET Core Web App
+Search: `ASP.NET Core Web App (Model-View-Controller) → Click: Next
+Project Name: `CollegePortalPWA`
+Framework: `NET 10 or Latest Available` → Click: Create
+
+2.Update Home Page
+`Views → Home → Index.cshtml`:Replace existing Html code with:
+
+<div class="text-center">
+<h1>Vartak College Information Portal</h1>
+<h3>Welcome to Vartak College</h3>
+<p>Courses Offered:</p>
+<ul>
+<li>BSC IT</li>
+<li>BSC CS</li>
+<li>BSC DS</li>
+</ul>
+<p>Contact: 9818763456</p>
+</div>
+
+3.Add PWA Support - Service Worker
+Right-click `wwwroot` → `Add → New Item` → `JavaScript File`
+Name: `service-worker.js`
+
+self.addEventListener('install', function (event) {
+console.log('Service Worker Installed');
+});
+self.addEventListener('fetch', function (event) {
+console.log('Fetching:', event.request.url);
+});
+
+4.Create Manifest File
+Right-click `wwwroot` → `Add → New Item` → `JSON File` →
+Name: `manifest.json`
+
+{
+ "name": " Vartak College Information Portal",
+ "short_name": "CollegePortal",
+ "start_url": "/",
+ "display": "standalone",
+ "background_color": "white",
+ "theme_color": "blue",
+ "icons": [
+  {
+   "src": "/icons/icon1.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "/icons/icon2.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  } ]}
+
+5. Create Icons Folder:
+
+ Right-click `wwwroot` → `Add → New Folder` → Name: `icons` Add:
+`icon1.png`
+`icon2.png`
+
+
+6. Register Manifest
+: `Views → Shared → _Layout.cshtml`
+
+Add manifest link tag inside `<head>` section.
+<link rel="manifest" href="~/manifest.json">
+
+7.Register Service Worker
+: Same `_Layout.cshtml` file, before `</body>`
+
+<script>
+if ('serviceWorker' in navigator)
+{ navigator.serviceWorker.register('/service-worker.js')
+.then((registration) => {
+console.log('Service Worker Registered!', registration);
+}).catch((error) => { console.log('Service Worker Registration Failed:', error);
+});}</script>
+
+
+8.Verify Static Files Enabled
+`Program.cs`
+Ensure this line exists, if not then add at appropriate place:
+app.UseStaticFiles();
+
+
+9.Run Application
+Run in Chrome. Click on PWA Install Icon in address bar to install the app.
+
+
+______________________________________________________________________________________________________________________________________________________
+
+Practical 6B
+1. Create ASP.NET Core MVC Projec:Project Name: `OfflinePWA`:
+
+2. Framework: `.NET 10 or Latest Available` → Click: Create
+
+3. Create Home Page:Views → Home → Index.cshtml`
+
+<div class="text-center">
+<h1> VARTAK College Information Portal</h1>
+<h3>Welcome to VARTAK College</h3>
+<p>This website supports Offline Mode.</p>
+</div>
+
+4. Create Offline Page
+
+5. : Right-click `wwwroot` → `Add → New Item → HTML Page` →Name: `offline.html`."
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Offline</title>
+</head>
+<body>
+<h1>No Internet Connection</h1>
+<h3>Please check your internet connection.</h3>
+</body></html>
+
+6. Create Manifest File: `wwwroot` → `Add → New Item → JSON File`
+
+7. →Name: `manifest.json`
+
+{
+"name": "Offline PWA",
+"short_name": "OfflinePWA",
+"start_url": "/",
+"display": "standalone",
+"background_color": "White", "theme_color": "blue",
+"icons": [
+{
+"src": "/icons/icon1.png", "sizes": "192x192", "type": "image/png"
+},
+{
+"src": "/icons/icon2.png", "sizes": "512x512", "type": "image/png"
+}]}
+
+
+Create Icons Folder: `wwwroot` → `Add → New Folder` → Name: `icons`
+Add two icon files inside it.
+•  icon1.png
+•  icon2.png
+
+
+8. Create Service Worker for Offline Caching: `wwwroot` → `Add → New Item → JavaScript File` →Name:
+`service-worker.js`
+
+const CACHE_NAME = "offline-cache-v1";
+const urlsToCache = [ "/","/offline.html"];
+self.addEventListener("install", event => {
+event.waitUntil(caches.open(CACHE_NAME).then(cache => {
+return cache.addAll(urlsToCache);
+}));});self.addEventListener("fetch", event => { event.respondWith(
+fetch(event.request)
+.catch(() => { return caches.match("/offline.html");}));});
+
+
+9. Register Manifest:Views → Shared → _Layout.cshtml → Add link tag in `<head>`
+<link rel="manifest" href="~/manifest.json">
+
+
+10. Register Service Worker: Same `_Layout.cshtml` file, before `</body>`
+
+<script>
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/service-worker.js')
+.then(() => console.log('Service Worker Registered'));
+}
+</script>
+
+11. Verify Static Files: `Program.cs →Add
+`app.UseStaticFiles();`
+
+12. Run Application
+
+13. Verify Service Worker
+Press `F12` → `Application → Service Workers` → Verify status.
+
+14. Test Offline Page
+Press `F12` → `Network` tab → Select `Offline` → Refresh page.
+
+

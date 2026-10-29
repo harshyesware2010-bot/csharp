@@ -1,0 +1,57 @@
+9 A Create an API endpoint to calculate Factorial of a Number and test it using Postman.
+
+Steps:
+
+1. Create ASP.NET Core Web API Project
+Open Visual Studio 2026 → Create New Project
+Select `ASP.NET Core Web API`
+Project Name: `FactorialAPI`
+Framework: `.NET 8` → Enable OpenAPI Support → Click: Create
+
+2. Create Controller
+: `Controllers` folder → Add Class: `MathController.cs`
+
+3. Write Factorial Logic
+
+Create GET method with route `factorial/{number}`
+Check if number is negative, return BadRequest
+Use loop to calculate factorial of the given number
+Return result as JSON with Number and Factorial
+
+
+using Microsoft.AspNetCore.Mvc;
+namespace FactorialAPI.Controllers {
+[Route("api/[controller]")]
+[ApiController]
+public class MathController : ControllerBase {
+[HttpGet("factorial/{number}")]
+public IActionResult GetFactorial(int number) {
+if (number < 0){
+return BadRequest("Factorial not possible for negative numbers."); }
+long factorial = 1;
+for (int i = 1; i <= number; i++) {
+factorial *= i; }
+return Ok(new {
+Number = number,
+Factorial = factorial
+}); }}}
+
+
+4. Run the Project
+Project will run at `https://localhost:xxxx`
+
+5. Test API in Browser
+Open URL: https://localhost:44335/api/math/factorial/5
+
+
+6. Test using Postman
+Open Postman → Select Method: `GET`
+Enter URL: `https://localhost:xxxx/api/math/factorial/5`
+Click: Send
+
+
+7. Test Negative Number
+Enter URL: `https://localhost:xxxx/api/math/factorial/-2`
+Click: Send
+
+

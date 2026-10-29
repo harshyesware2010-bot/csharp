@@ -1,0 +1,66 @@
+Practical No :-1
+
+Q.1 Create an application to print Floyd's triangle till n rows in c#.
+
+Code:-
+
+using System;
+
+class FloydTriangle
+{
+    static void Main()
+    {
+        int n, num = 1;
+
+        Console.Write("Enter the number of rows: ");
+        n = Convert.ToInt32(Console.ReadLine());
+
+        for (int i = 1; i <= n; i++)
+        {
+            for (int j = 1; j <= i; j++)
+            {
+                Console.Write(num + " ");
+                num++;
+            }
+            Console.WriteLine();
+        }
+
+        Console.ReadLine();
+    }
+}
+-----------------------------------------------------------------
+Q.2  Write C# code to arrange the name of cities in sorted order. Accept name of 10 
+cities from the user
+
+Code:-
+
+using System;
+
+class CitySort
+{
+    static void Main()
+    {
+        string[] city = new string[10];
+
+        Console.WriteLine("Enter the names of 10 cities:");
+
+        for (int i = 0; i < 10; i++)
+        {
+            city[i] = Console.ReadLine();
+        }
+
+        // Sort the city names
+        Array.Sort(city);
+
+        Console.WriteLine("\nCities in Sorted Order:");
+
+        foreach (string c in city)
+        {
+            Console.WriteLine(c);
+        }
+
+        Console.ReadLine();
+    }
+}
+
+-------------------------------------------------------------------------

@@ -1,0 +1,145 @@
+Practical 8A
+
+Create a PWA Application with an HTML page that would be the starting point of the application. This HTML will contain a link to the file named manifest.json .
+
+> Create Empty Web Project Create new project: Select: ASP.NET Core Web App (Model-View-Controller)
+  Click: Next
+
+> Configure Project
+  Project Name: `BasicPWA`Framework: `.NET 10 or Latest` Click: Create
+
+> Enable Static Files
+
+> Open `Program.cs`
+
+> app.UseDefaultFiles();
+
+> app.UseStaticFiles();
+
+app.Run();
+
+> Create Starting HTML Page
+
+  : Right-click `wwwroot` → `Add New Item` → `HTML Page` Name: `index.html`
+
+  <!DOCTYPE html>
+<html>
+<head>
+    <title>Basic PWA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <h1>My Progressive Web Application</h1>
+    <p>This is the starting page of PWA.</p>
+</body>
+</html>
+
+> Link Manifest File in HTML
+
+  Inside `<head>` tag of `index.html` add link to `manifest.json`
+
+  <link rel="manifest" href="manifest.json">
+
+  Create Icons Folder:Right-click `wwwroot` → `Add → New Folder` → Name: `Icons`
+
+  Add: icon1.png
+       icon2.png
+
+> Create Manifest File
+
+  : Right-click `wwwroot` → `Add → New Item` → `JSON File` Name: `manifest.json`
+
+{
+  "name": "Basic Progressive Web Application",
+  "short_name": "BasicPWA",
+  "description": "Simple  Example",
+  "start_url":"/index.html",
+  "display":"standalon",
+  "background_color":"white",
+  "theme_color":"blue",
+  "orientation":"portrait",
+  "icons": [
+    {
+      "src":"/icons/icon1.png", "sizes":"192x192","type": "image/png"
+    },
+    {
+    "src":"/icons/icon2.png", "sizes": "512x512", "type": "image/png"}]
+
+Run Application
+
+  Browser opens: `https://localhost:xxxx/index.html` PWA Install button appears in address bar
+
+_________________________________________________________________________________________________________________________________________________________________________________________
+
+8(B) Create a simple Web API that returns student data in JSON format.
+Algorithm / Steps:
+
+1. Create Web API Project
+Open Visual Studio 2026
+Create new project
+Select `ASP.NET Core Web API`
+Click: Next
+
+2. Configure Project
+Project Name: `StudentAPI`
+Framework: `.NET 10 or Latest`
+Click: Create
+
+3. Create Student Model
+: Right-click Project → `Add → New Folder`
+Name: `Models`
+Inside Models: `Add → Class → Name: `Student.cs`
+
+namespace StudentAPI.Models {
+public class Student {
+public int Id { get; set; }
+public string Name { get; set; }
+public string Course { get; set; }
+public int Age { get; set; }
+}}
+
+
+4. Create API Controller
+: Right-click Project → `Add → New Folder` → Name: `Controllers`
+Inside Controllers: `Add → Controller` → Choose: `API Controller - Empty`
+
+Name: `StudentController.cs`
+
+5. Write API code in the File
+: `StudentController.cs`
+Add routing attribute and create method to return list of student objects
+
+using Microsoft.AspNetCore.Mvc;
+using StudentAPI.Models;
+namespace StudentAPI.Controllers
+{
+[ApiController]
+[Route("api/[controller]")]
+public class StudentController : ControllerBase {
+[HttpGet]
+public List<Student> GetStudents() {
+return new List<Student>() {
+new Student
+{
+Id = 1,
+Name = "Rahul",
+Course = "BSc IT",
+Age = 20
+},
+new Student
+{
+Id = 2,
+Name = "Sneha",
+Course = "BCA",
+Age = 21
+} };}}}
+
+
+6. Run Application
+Run the project
+
+7. Test API
+Open browser and go to: `https://localhost:xxxx/api/student`
+Output: Student data is displayed in JSON format
+

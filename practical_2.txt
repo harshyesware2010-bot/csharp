@@ -1,0 +1,244 @@
+Practical No :- 2
+
+Q.1 Write a c# program to demonstrate function overloading by creating a method salary.
+a.salary (Double basic salary)
+b.Display basic salary
+c.salary double salary,double bonus
+d.display total salary after adding bonus.
+
+code:-
+
+using System;
+
+namespace practol
+{
+    class abc
+    {
+        public void Salary(double basic_salary)
+        {
+            Console.WriteLine("Basic Salary: " + basic_salary);
+        }
+
+        public void Salary(double basic_salary, double bonus)
+        {
+            double total = basic_salary + bonus;
+            Console.WriteLine("Total Salary: " + total);
+        }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            abc b = new abc();
+
+            Console.WriteLine("Enter basic salary:");
+            double a = double.Parse(Console.ReadLine());
+
+            b.Salary(a);
+
+            Console.WriteLine("Enter basic salary and bonus amount:");
+            double c = double.Parse(Console.ReadLine());
+            double d = double.Parse(Console.ReadLine());
+
+            b.Salary(c, d);
+
+            Console.ReadKey();
+        }
+    }
+}
+-------------------------------------------------------------------------------------------
+Q.2] Write a c# program to demonstrate different types of inheritance using employee detail.
+
+code:-
+
+using System;
+
+namespace inheritance
+{
+    class employee
+    {
+        public void display(int id, string name)
+        {
+            Console.WriteLine("Id: " + id);
+            Console.WriteLine("Name: " + name);
+        }
+    }
+
+    class manager : employee
+    {
+        public void department(string d)
+        {
+            Console.WriteLine("Department: " + d);
+        }
+    }
+
+    class senior_manager : manager
+    {
+        public void year(int ex)
+        {
+            Console.WriteLine("The years experience: " + ex);
+        }
+    }
+
+    class developer : employee
+    {
+        public void language(string lang)
+        {
+            Console.WriteLine("Programming Language: " + lang);
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            senior_manager m = new senior_manager();
+
+            Console.WriteLine("Enter the id:");
+            int id = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Enter the name:");
+            string name = Console.ReadLine();
+
+            m.display(id, name);
+
+            Console.WriteLine("Enter the Department:");
+            string d = Console.ReadLine();
+
+            m.department(d);
+
+            Console.WriteLine("Enter the year of experience:");
+            int ex = int.Parse(Console.ReadLine());
+
+            m.year(ex);
+
+            developer dev = new developer();
+
+            Console.WriteLine("Enter the Programming Language:");
+            string lang = Console.ReadLine();
+
+            dev.language(lang);
+
+            Console.ReadKey();
+        }
+    }
+}
+---------------------------------------------------------------------------------
+
+Q.3] Write a c# program to demonstrate constructor overloading. Create a class name student with following data member student id and student name
+
+code:-
+
+using System;
+
+class student
+{
+    public student()
+    {
+        Console.WriteLine("No Data Available");
+    }
+
+    public student(int s_id, string name)
+    {
+        Console.WriteLine("Student id: " + s_id);
+        Console.WriteLine("Student name: " + name);
+    }
+}
+
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        student s = new student();
+        student t = new student(105, "Ruhi");
+
+        Console.ReadLine();
+    }
+}
+------------------------------------------------------------------------------------
+Q.4] Write a c# program to demonstrate the user and interface create an interface name Ishape with the following method void area,creates a class rectangle that implements Ishape interface,accept the values from user.
+
+Code:-
+
+using System;
+
+interface ishape
+{
+    int area(int a, int b);
+}
+
+namespace Binterface
+{
+    class rectangle : ishape
+    {
+        public int area(int a, int b)
+        {
+            return a * b;
+        }
+    }
+
+    class square : ishape
+    {
+        public int area(int x, int y)
+        {
+            return x * y;
+        }
+    }
+
+    class M
+    {
+        public static void Main(String[] args)
+        {
+            rectangle r = new rectangle();
+
+            Console.WriteLine("Enter the length:");
+            int a = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Enter the breadth:");
+            int b = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Area of rectangle: " + r.area(a, b));
+
+            square s = new square();
+
+            Console.WriteLine("Enter the side for square:");
+            int d = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Area of square: " + s.area(d, d));
+        }
+    }
+}
+--------------------------------------------------------------------------------
+
+Q.5] Write a c# program to demonstrate exceptional handling.
+
+Code:-
+
+using System;
+
+class pswrd
+{
+    public static void Main(String[] args)
+    {
+        try
+        {
+            Console.WriteLine("Enter the password:");
+            String ps = Console.ReadLine();
+
+            if (ps.Length < 8)
+                throw new Exception("Password must contain atleast 8 characters");
+
+            Console.WriteLine("Password accepted");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+        finally
+        {
+            Console.WriteLine("code complete");
+        }
+    }
+}
+----------------------------------------------------------------------------------------
